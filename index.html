@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Livrii Memories</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+
+body{
+  font-family:"Comic Sans MS","Trebuchet MS",cursive;
+  color:#fff;
+  background:#2c335e;
+  transition:background 6s ease;
+}
+
+/* pastel bg */
+body.p1{background:#2c335e}
+body.p2{background:#3d557c}
+body.p3{background:#6e87a8}
+body.p4{background:#9fb3c8}
+body.fade{background:#fff!important;transition:background 3s ease}
+
+/* outline + glow */
+h1,h2,p,button{
+  text-shadow:
+   -1px -1px 0 #000,
+    1px -1px 0 #000,
+   -1px  1px 0 #000,
+    1px  1px 0 #000,
+    0 0 14px rgba(255,255,255,.35);
+}
+
+/* rain */
+.rain{position:fixed;inset:0;pointer-events:none;z-index:1;transition:opacity 1s}
+.drop{
+  position:absolute;
+  width:2px;
+  height:18px;
+  background:linear-gradient(to bottom,rgba(255,255,255,.9),rgba(255,255,255,0));
+  opacity:.5;
+  animation:fall linear infinite;
+}
+@keyframes fall{to{transform:translateY(110vh)}}
+
+/* pages */
+.page{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:10%;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 1.2s ease;
+  z-index:2;
+  overflow-y: auto;
+}
+.page.active{opacity:1;pointer-events:auto}
+
+.scrollable {
+  justify-content: flex-start;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+/* Personal Photos Section */
+.personal-frames {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.frame { text-align: center; }
+.frame img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 0 15px rgba(255,255,255,0.4);
+}
+.frame span { display: block; margin-top: 5px; font-weight: bold; }
+
+/* Custom Scrollbar */
+.page::-webkit-scrollbar { width: 5px; }
+.page::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+p { line-height: 1.6; margin-bottom: 20px; text-align: center; max-width: 700px; }
+
+.btn{
+  margin-top: 20px;
+  margin-bottom: 40px;
+  padding:14px 44px;
+  border-radius:40px;
+  border:1px solid rgba(255,255,255,.6);
+  background:rgba(255,255,255,.18);
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 0 18px rgba(255,255,255,.35);
+  flex-shrink: 0;
+}
+
+.gallery img, video {
+  max-width:85%;
+  max-height: 60vh;
+  border-radius:22px;
+  box-shadow: 0 30px 90px rgba(0,0,0,.55), 0 0 40px rgba(255,255,255,.3);
+  object-fit: contain;
+}
+
+.copy{ margin-top: 20px; opacity:.6; font-size:.85em; padding-bottom: 20px; }
+audio{display:none}
+</style>
+</head>
+
+<body class="p1">
+
+<div class="rain" id="rain"></div>
+
+<div class="page active">
+  <h1>Livrii Memories</h1>
+  <p>Hujan, tawa, dan waktu.</p>
+  <button class="btn" onclick="next(true)">Flashback</button>
+  <div class="copy">© Livrii 2025</div>
+</div>
+
+<div class="page scrollable">
+  <div class="personal-frames">
+    <div class="frame">
+      <img src="liv.png" alt="Liv">
+      <span>Liv</span>
+    </div>
+    <div class="frame">
+      <img src="rii.png" alt="Rii">
+      <span>Rii</span>
+    </div>
+  </div>
+
+  <p>
+    Kami pertama kali bertemu pada Juli 2018. Pertemuan yang awalnya biasa saja, perlahan berubah menjadi rutinitas yang aman dan penuh tawa. 🌧️<br><br>
+    Hubungan ini dimulai secara resmi pada 24 Mei 2023. Bukan dengan janji besar, tapi dengan rasa nyaman yang diam-diam mengakar kuat. 🤍<br><br>
+    29 Mei 2025 di DM Waterpark menjadi salah satu puncak kebahagiaan kita. Tawa lepas yang tak terpikirkan akan menjadi kenangan yang berat untuk diingat di kemudian hari. 💦<br><br>
+    Hingga pada akhirnya, 12 Juli 2025, perjalanan ini harus menemui titik jedanya. Berakhir dengan tenang, tanpa drama, menyisakan arsip kenangan yang akan selalu disimpan hujan. 🌫️
+  </p>
+  
+  <button class="btn" onclick="next()">Lanjut?</button>
+  <div class="copy">© Livrii 2025</div>
+</div>
+
+<div class="page gallery">
+  <img id="slide" src="lr1.png">
+  <button class="btn" onclick="next()">Lanjut?</button>
+  <div class="copy">© Livrii 2025</div>
+</div>
+
+<div class="page">
+  <video id="vid" src="lr1.mp4" controls></video>
+  <div class="copy">© Livrii 2025</div>
+</div>
+
+<div class="page">
+  <p>“Tidak semua cerita selesai, sebagian hanya disimpan hujan.” 🌧️</p>
+  <button class="btn" onclick="restart()">Ulang Flashback</button>
+  <div class="copy">© Livrii 2025</div>
+</div>
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const pages=document.querySelectorAll(".page");
+const rain=document.getElementById("rain");
+const music=document.getElementById("music");
+const slide=document.getElementById("slide");
+const video=document.getElementById("vid");
+let idx=0;
+
+/* Navigation */
+function next(startMusic=false){
+  setTimeout(()=>{
+    pages[idx].classList.remove("active");
+    idx++;
+    if(pages[idx]) pages[idx].classList.add("active");
+    cycleBG();
+
+    if(startMusic) music.play().catch(e => console.log("Audio Play Blocked"));
+    
+    // Matikan hujan hanya saat video diputar agar tidak berat
+    if(idx===3) rain.style.opacity=0;
+    else rain.style.opacity=1;
+  },500);
+}
+
+function restart(){
+  document.body.classList.remove("fade");
+  pages[idx].classList.remove("active");
+  idx=0;
+  v=0; // Reset video index
+  g=1; // Reset gallery index
+  pages[0].classList.add("active");
+  rain.style.opacity=1;
+  music.currentTime=0;
+  video.src = "lr1.mp4";
+}
+
+/* Background Cycle */
+const bg=["p1","p2","p3","p4"];
+let b=0;
+function cycleBG(){
+  document.body.className=bg[b%bg.length];
+  b++;
+}
+
+/* Gallery Loop (Hanya lr1 - lr5) */
+let g=1;
+setInterval(()=>{
+  if(idx===2){
+    g = (g < 5) ? g + 1 : 1;
+    slide.style.opacity=0;
+    setTimeout(()=>{
+      slide.src="lr"+g+".png";
+      slide.style.opacity=1;
+    },500);
+  }
+},3500);
+
+/* Video Chain (4 Video: lr1 - lr4) */
+const vids=["lr1.mp4","lr2.mp4","lr3.mp4","lr4.mp4"];
+let v=0;
+video.onended=()=>{
+  v++;
+  if(v < vids.length){
+    video.src=vids[v];
+    video.play();
+  } else {
+    rain.style.opacity=1;
+    next();
+    setTimeout(()=>document.body.classList.add("fade"),1200);
+  }
+};
+
+/* Rain Drops */
+for(let i=0;i<100;i++){
+  const d=document.createElement("div");
+  d.className="drop";
+  d.style.left=Math.random()*100+"vw";
+  d.style.animationDuration=1.8+Math.random()*1.8+"s";
+  d.style.animationDelay=Math.random()*5+"s";
+  rain.appendChild(d);
+}
+</script>
+
+</body>
+</html>
